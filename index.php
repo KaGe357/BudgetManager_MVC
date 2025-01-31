@@ -1,39 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Manager</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="./img/favicon.svg" type="image/png">
-
-</head>
-
-<body>
-    <main>
-        <header>
-            <div class="container-fluid fs-4">
-                <div class="main-page">
-                    <h1 class="text-center oxanium"><img src="./img/logo budget manager.svg" id="img" width="100" alt="">
-                        Kontroluj swoje finanse z łatwością - Planuj, oszczędzaj, osiągaj cele!</h1>
-                </div>
-        </header>
-
-        <section class="text-center pt-5">
-            <a href="/log-in" class="btn btn-success mx-1">
-                Zaloguj
-            </a>
-            <a href="/register" class="btn btn-primary mx-1">
-                Zarejestruj
-            </a>
-        </section>
-        </div>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</body>
-
-</html>
+<?php
+require 'vendor/autoload.php';
+require 'routes/web.php';
+if (!file_exists('routes/web.php')) {
+    die('Plik routes/web.php nie istnieje');
+}

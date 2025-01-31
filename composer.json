@@ -1,8 +1,16 @@
 {
+    "name": "kamil/budget-manager_mvc",
+    "description": "MVC Budget Manager",
+    "type": "project",
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "src/App"
         }
     },
+    "authors": [
+        {
+            "name": "Kamil"
+        }
+    ],
     "require": {}
 }
