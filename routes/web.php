@@ -4,7 +4,8 @@ use App\Controllers\AuthController;
 use App\Controllers\PageController;
 use App\Controllers\BalanceController;
 
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = str_replace('/public', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+
 
 if ($uri === '/' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     (new PageController())->index();
