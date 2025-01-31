@@ -3,36 +3,40 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
-use App\Models\BalanceModel;
 use App\Helpers\SessionHelper;
-
 
 class AuthController
 {
+    public function showLoginForm()
+    {
+        require __DIR__ . '/../Views/login.php';
+    }
+
     public function login()
     {
-        if (!isset($_POST['login']) || !isset($_POST['password'])) {
-            $_SESSION['error'] = 'Wypełnij wszystkie pola!';
+        if (!isset($_POST['login']) || !isset($_POST['haslo'])) {
+            SessionHelper::set('error', 'Wypełnij wszystkie pola!');
             header('Location: /login');
             exit();
         }
 
         $email = $_POST['login'];
-        $password = $_POST['password'];
+        $password = $_POST['haslo'];
 
         $userModel = new UserModel();
         $user = $userModel->findUserByEmail($email);
 
-        if ($user && password_verify($password, $user['password'])) {
+        if ($user && password_verify($password, $user['pass'])) {
             SessionHelper::set('user', [
                 'id' => $user['id'],
                 'name' => $user['name'],
             ]);
-
             header('Location: /home');
+            exit();
         } else {
-            $_SESSION['error'] = 'Nieprawidłowe dane logowania';
+            SessionHelper::set('error', 'Nieprawidłowy login lub hasło!');
             header('Location: /login');
+            exit();
         }
     }
 
@@ -40,5 +44,6 @@ class AuthController
     {
         SessionHelper::destroy();
         header('Location: /');
+        exit();
     }
 }

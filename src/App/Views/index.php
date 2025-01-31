@@ -22,7 +22,7 @@
         </header>
 
         <section class="text-center pt-5">
-            <a href="/log-in" class="btn btn-success mx-1">
+            <a href="/login" class="btn btn-success mx-1">
                 Zaloguj
             </a>
             <a href="/register" class="btn btn-primary mx-1">
