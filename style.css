@@ -1,0 +1,141 @@
+
+.oxanium {
+  font-family: "Oxanium", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.main-page{
+    color: rgb(48, 2, 255);
+    background: #ebf9ff76;
+    background-size: cover; 
+    background-position: center; 
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-image: url("./img/background.png");
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    font-size: 1rem;
+
+}
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.form-signin {
+    max-width: 400px; 
+    padding: 20px; 
+}
+#img{
+    border-radius: 50%;
+}
+.resize{
+    max-width: 300px;
+}
+#incomeChart{
+    max-width: 250px;
+    max-height: 250px;
+}
+#expenseChart{
+    max-width: 250px;
+    max-height: 250px;
+}
+
+.bordered{
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgba(211, 211, 211, 0.50);   
+}
+.border{
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgba(211, 211, 211, 0.50);
+   
+}
+.bold{
+    font-weight: bold;
+}
+.recent-transactions {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .transactions-table th,
+  .transactions-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .transactions-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .transactions-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  #refreshTransactions {
+    margin-top: 10px;
+  }
+
+  .navbar-nav {
+    display: flex;
+    justify-content: center;
+  }
+  .recent-transactions{
+  width: 600px;
+  }
+  .recent-transactions {
+    width: 100%;
+    max-width: 600px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+
+  .error{
+    color:red;
+    font-size: 0.75rem;
+  }
+
+  canvas {
+    width: 100% !important;
+    max-width: 200px; /* Ogranicza szerokość wykresu */
+    height: auto;
+}
+
+  .chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+
+
+
+  @media (max-width: 576px) {
+    .navbar-nav {
+      justify-content: flex-start;
+    }
+  }
