@@ -1,9 +1,9 @@
 <?php
 
 require_once '../vendor/autoload.php';
+
+use App\Helpers\SessionHelper;
+
+SessionHelper::start();
+
 require_once '../routes/web.php';
-
-use App\Controllers\PageController;
-
-$pageController = new PageController();
-$pageController->index();

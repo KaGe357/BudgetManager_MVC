@@ -2,20 +2,22 @@
 
 use App\Controllers\AuthController;
 use App\Controllers\PageController;
-use App\Controllers\BalanceController;
 
-$uri = str_replace('/public', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
 
-if ($uri === '/' || $uri === '/index') {
+
+if ($uri === '/' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     (new PageController())->index();
-} elseif ($uri === '/login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+} elseif ($uri === '/login' && $method === 'GET') {
+    (new AuthController())->showLoginForm();
+} elseif ($uri === '/login' && $method === 'POST') {
     (new AuthController())->login();
-} elseif ($uri === '/logout') {
-    (new AuthController())->logout();
-} elseif ($uri === '/balance') {
-    (new BalanceController())->index();
+} elseif ($uri === '/register' && $method === 'GET') {
+    (new AuthController())->showRegisterForm();
+} elseif ($uri === '/register' && $method === 'POST') {
+    (new AuthController())->register();
 } else {
     http_response_code(404);
-    require __DIR__ . '/../src/App/Views/404.php';
-    exit(); // Dodaj `exit` po wyświetleniu strony 404
+    echo "Nie znaleziono strony";
 }

@@ -20,4 +20,17 @@ class UserModel
 
         return $stmt->fetch();
     }
+
+    public function userExists($email)
+    {
+        $stmt = $this->db->prepare('SELECT COUNT(*) FROM users WHERE email = ?');
+        $stmt->execute([$email]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    public function createUser($name, $email, $passwordHash)
+    {
+        $stmt = $this->db->prepare('INSERT INTO users (name, email, pass) VALUES (?, ?, ?)');
+        return $stmt->execute([$name, $email, $passwordHash]);
+    }
 }
