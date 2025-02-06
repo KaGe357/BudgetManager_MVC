@@ -35,4 +35,9 @@ class SessionHelper
         session_unset();
         session_destroy();
     }
+    public static function has($key)
+    {
+        self::start();
+        return isset($_SESSION[$key]);
+    }
 }

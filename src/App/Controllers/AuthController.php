@@ -14,6 +14,7 @@ class AuthController
 
     public function login()
     {
+
         if (!isset($_POST['login']) || !isset($_POST['haslo'])) {
             SessionHelper::set('error', 'Wypełnij wszystkie pola!');
             header('Location: /login');
@@ -43,7 +44,8 @@ class AuthController
     public function logout()
     {
         SessionHelper::destroy();
-        header('Location: /');
+
+        header('Location: /login');
         exit();
     }
 

@@ -12,7 +12,7 @@ class BalanceController
     {
         $userId = SessionHelper::get('user')['id'];
 
-        $balanceModel = new \BalanceModel();
+        $balanceModel = new BalanceModel();
         $data = $balanceModel->getBalanceForUser($userId);
 
         require __DIR__ . '/../Views/balance.php';

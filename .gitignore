@@ -1,1 +1,4 @@
 /vendor/
+add_user.php
+create_tables.sql
+/config/
