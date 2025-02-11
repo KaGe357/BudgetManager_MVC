@@ -14,7 +14,7 @@ class HomeController
             exit();
         }
 
-        $user = SessionHelper::get('user'); // Pobierz dane użytkownika z sesji
+        $user = SessionHelper::get('user');
         $userName = $user['name'];
 
         require __DIR__ . '/../Views/home.php';

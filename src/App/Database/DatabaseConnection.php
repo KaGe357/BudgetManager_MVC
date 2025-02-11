@@ -14,7 +14,6 @@ class DatabaseConnection
         $config = require __DIR__ . '/../../../config/config.php';
 
         try {
-            // Połącz się z serwerem MySQL bez określenia bazy danych
             $pdo = new PDO(
                 "mysql:host=" . $config['host'],
                 $config['user'],
@@ -22,19 +21,16 @@ class DatabaseConnection
             );
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Sprawdź, czy baza danych istnieje
             $dbName = $config['dbname'];
             $checkDb = $pdo->prepare("SHOW DATABASES LIKE :dbname");
             $checkDb->execute([':dbname' => $dbName]);
             $databaseExists = $checkDb->fetch();
 
             if (!$databaseExists) {
-                // Jeśli baza danych nie istnieje, utwórz ją
                 $pdo->exec("CREATE DATABASE `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
                 echo "Baza danych `$dbName` została utworzona.\n";
             }
 
-            // Ustaw połączenie z bazą danych
             $this->pdo = new PDO(
                 "mysql:host=" . $config['host'] . ";dbname=" . $dbName,
                 $config['user'],

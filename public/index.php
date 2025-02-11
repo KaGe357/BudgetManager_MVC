@@ -11,11 +11,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 try {
-    // Połączenie z bazą danych
     $db = new DatabaseConnection();
     $pdo = $db->getConnection();
 
-    // Inicjalizacja bazy danych (tworzenie tabel, jeśli nie istnieją)
     $initializer = new DatabaseInitializer($pdo);
     $initializer->initialize();
 } catch (Exception $e) {

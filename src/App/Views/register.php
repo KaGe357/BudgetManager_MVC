@@ -1,3 +1,8 @@
+<?php
+session_start(); // Upewnij się, że sesja jest uruchomiona
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +16,8 @@
 </head>
 
 <body>
+
+
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -42,7 +49,7 @@
     <main class="form-signin w-100 m-auto center">
         <div class="container bordered p-5">
             <h1 class="fs-4">Zarejestruj się</h1>
-            <form method="post" class="">
+            <form action="/register" method="POST">
                 Imię: <br> <input type="text" class="form-control" id="name" value="<?php
                                                                                     if (isset($_SESSION['fr_name'])) {
                                                                                         echo $_SESSION['fr_name'];
@@ -98,18 +105,18 @@
                                                             }
                                                             ?>> Akceptuję regulamin
                 </label><br>
-                <?php
-                if (isset($_SESSION['e_regulamin'])) {
-                    echo '<div class="error">' . $_SESSION['e_regulamin'] . '</div>';
-                    unset($_SESSION['e_regulamin']);
-                }
-                ?>
+                <?php if (isset($_SESSION['e_regulamin'])): ?>
+                    <div class="error"><?php echo $_SESSION['e_regulamin']; ?></div>
+                    <?php unset($_SESSION['e_regulamin']); ?>
+                <?php endif; ?>
+
 
 
 
                 <input type="submit" value="Zarejestruj się">
             </form>
         </div>
+
     </main>
     <!-- <script src="./register.js"></script> -->
 </body>

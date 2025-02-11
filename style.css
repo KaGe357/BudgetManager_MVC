@@ -6,6 +6,42 @@
   font-style: normal;
 }
 
+.main-page {
+  position: relative; 
+  opacity: 0; 
+  transform: translateY(-100px); 
+  animation: slideDown 1.5s ease-out forwards; 
+}
+
+@keyframes slideDown {
+  0% {
+      opacity: 0;
+      transform: translateY(-100px); 
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.logo {
+  position: relative; 
+  opacity: 0; 
+  transform: translateX(-200px);  
+  animation: slideInFromLeft 1.5s ease-out forwards; 
+}
+
+ 
+@keyframes slideInFromLeft {
+  0% {
+      opacity: 0;
+      transform: translateX(-200px);  
+  }
+  100% {
+      opacity: 1;
+      transform: translateX(0); 
+  }
+}
 
 .main-page{
     color: rgb(48, 2, 255);
@@ -120,7 +156,7 @@ body{
 
   canvas {
     width: 100% !important;
-    max-width: 200px; /* Ogranicza szerokość wykresu */
+    max-width: 200px; 
     height: auto;
 }
 

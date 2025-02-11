@@ -34,6 +34,9 @@ class UserModel
 
     public function createUser($name, $email, $passwordHash)
     {
+
+
+
         try {
             $this->db->beginTransaction();
 

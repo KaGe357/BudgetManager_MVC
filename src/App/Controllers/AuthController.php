@@ -57,6 +57,9 @@ class AuthController
 
     public function register()
     {
+
+
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $wszystko_OK = true;
 
@@ -99,7 +102,7 @@ class AuthController
 
                     if ($result === true) {
                         SessionHelper::set('udanarejestracja', true);
-                        header('Location: /welcome');
+                        header('Location: /');
                         exit();
                     } else {
                         SessionHelper::set('e_email', 'Wystąpił błąd podczas tworzenia konta. Spróbuj ponownie później.');
@@ -107,7 +110,6 @@ class AuthController
                 }
             }
 
-            // Zachowaj dane wprowadzone w formularzu w sesji
             SessionHelper::set('fr_name', $name);
             SessionHelper::set('fr_email', $email);
             SessionHelper::set('fr_haslo1', $haslo1);
