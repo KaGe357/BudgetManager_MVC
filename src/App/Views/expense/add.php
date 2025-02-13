@@ -13,7 +13,7 @@
 <body>
     <main>
         <div class="container">
-            <?php include __DIR__ . '../nav.php'; ?>
+            <?php include __DIR__ . '/../nav.php'; ?>
 
             <div class="d-flex justify-content-center border py-4">
                 <form action="/expense/save" method="POST">

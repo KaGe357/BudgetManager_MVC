@@ -31,7 +31,6 @@ class BalanceController
         require __DIR__ . '/../Views/balance.php';
     }
 
-
     public function getBalanceData()
     {
         SessionHelper::start();
@@ -55,11 +54,12 @@ class BalanceController
         $totalExpenses = array_sum(array_column($expenses, 'total_expenses'));
         $balance = $totalIncome - $totalExpenses;
 
+        header('Content-Type: application/json');
         echo json_encode([
             'success' => true,
             'totalBalance' => $balance,
             'incomes' => $incomes,
             'expenses' => $expenses,
-        ]);
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 }
