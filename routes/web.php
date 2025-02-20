@@ -7,6 +7,7 @@ use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\PageController;
 use App\Controllers\IncomeController;
+use App\Controllers\SettingsController;
 
 // Strony główne
 Router::add('GET', '/', [PageController::class, 'index']);
@@ -26,9 +27,25 @@ Router::add('GET', '/expense/add', [ExpenseController::class, 'add']);
 Router::add('POST', '/expense/save', [ExpenseController::class, 'save']);
 Router::add('GET', '/balance', [BalanceController::class, 'index']);
 
-
+// Bilans
 Router::add('GET', '/balance', [BalanceController::class, 'index']);
 Router::add('POST', '/api/balance', [BalanceController::class, 'getBalanceData']);
+
+// Ustawienia
+Router::add('GET', '/settings', [SettingsController::class, 'index']);
+Router::add('POST', '/settings/addIncomeCategory', [SettingsController::class, 'addIncomeCategory']);
+Router::add('POST', '/settings/removeIncomeCategory', [SettingsController::class, 'removeIncomeCategory']);
+Router::add('POST', '/settings/addExpenseCategory', [SettingsController::class, 'addExpenseCategory']);
+Router::add('POST', '/settings/removeExpenseCategory', [SettingsController::class, 'removeExpenseCategory']);
+
+Router::add('POST', '/settings/changeUserName', [SettingsController::class, 'changeUserName']);
+Router::add('POST', '/settings/changePassword', [SettingsController::class, 'changePassword']);
+
+// Ustawienia konta
+Router::add('GET', '/settings/account', [SettingsController::class, 'accountSettings']);
+Router::add('POST', '/settings/account/update', [SettingsController::class, 'updateAccount']);
+
+Router::add('POST', '/settings/deleteAccount', [SettingsController::class, 'deleteAccount']);
 
 
 // Obsługa routingu

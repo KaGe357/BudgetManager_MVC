@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log("Debug: Odpowiedź serwera:", data); // 🔍 Debugowanie
+           // console.log("Debug: Odpowiedź serwera:", data); // 🔍 Debugowanie
 
             if (data.success) {
                 document.getElementById("balance").textContent = `${data.totalBalance.toFixed(2)} PLN`;

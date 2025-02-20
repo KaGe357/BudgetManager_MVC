@@ -145,7 +145,6 @@
     <script src="../../../public/js/balance-script.js"></script>
     <script src="../../../public/js/transaction-charts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../../public/js/script.js"></script>
 
 </body>
 
