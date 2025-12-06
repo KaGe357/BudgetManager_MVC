@@ -121,6 +121,20 @@ class SettingsModel
         return $category['id'];
     }
 
+    // Pobieranie limitu dla konkretnej kategorii wydatków
+    public function getLimit($userId, $categoryName)
+    {
+        $stmt = $this->db->prepare("
+            SELECT spending_limit 
+            FROM expenses_category_assigned_to_users 
+            WHERE user_id = ? AND name = ?
+        ");
+        $stmt->execute([$userId, $categoryName]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $result ? $result['spending_limit'] : null;
+    }
+
     // Aktualizacja nazwy użytkownika
     public function updateUserName($userId, $newUserName)
     {
@@ -169,5 +183,42 @@ class SettingsModel
             error_log("Błąd usuwania konta: " . $e->getMessage());
             return false;
         }
+    }
+
+    // Aktualizacja limitu kategorii wydatków
+    public function updateCategoryLimit($userId, $categoryId, $limit)
+    {
+        $limitValue = ($limit === '' || $limit === null) ? null : floatval($limit);
+
+        $stmt = $this->db->prepare("
+            UPDATE expenses_category_assigned_to_users 
+            SET spending_limit = ? 
+            WHERE id = ? AND user_id = ?
+        ");
+
+        return $stmt->execute([$limitValue, $categoryId, $userId]);
+    }
+
+    // Pobieranie kategorii wydatków z limitami i sumami wydatków
+    public function getExpenseCategoriesWithLimits($userId)
+    {
+        $stmt = $this->db->prepare("
+            SELECT 
+                c.id,
+                c.name,
+                c.spending_limit,
+                COALESCE(SUM(e.amount), 0) as total_spent
+            FROM expenses_category_assigned_to_users c
+            LEFT JOIN expenses e ON e.expense_category_assigned_to_user_id = c.id 
+                AND e.user_id = c.user_id
+                AND MONTH(e.date_of_expense) = MONTH(CURRENT_DATE())
+                AND YEAR(e.date_of_expense) = YEAR(CURRENT_DATE())
+            WHERE c.user_id = ?
+            GROUP BY c.id, c.name, c.spending_limit
+            ORDER BY c.name
+        ");
+
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

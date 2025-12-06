@@ -7,6 +7,7 @@
     <title>Budget Manager - Ustawienia</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -39,6 +40,7 @@
                                     <input type="hidden" name="category_id" value="<?= $category['id']; ?>">
                                     <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                                 </form>
+
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -49,17 +51,25 @@
                     </form>
                 </div>
 
+
                 <!-- Wydatki -->
                 <div class="col-md-6">
                     <h3>Wydatki</h3>
                     <ul class="list-group">
                         <?php foreach ($expenseCategories as $category): ?>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <?= htmlspecialchars($category['name']); ?>
-                                <form method="POST" action="/settings/removeExpenseCategory" style="display:inline;">
-                                    <input type="hidden" name="category_id" value="<?= $category['id']; ?>">
-                                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
-                                </form>
+                                <span><?= htmlspecialchars($category['name']); ?></span>
+                                <div>
+                                    <button class="btn btn-warning btn-sm limit-btn" data-bs-toggle="modal" data-bs-target="#limitModal"
+                                        data-category-id="<?= $category['id']; ?>"
+                                        data-category-name="<?= htmlspecialchars($category['name']); ?>">
+                                        Limit
+                                    </button>
+                                    <form method="POST" action="/settings/removeExpenseCategory" style="display:inline;">
+                                        <input type="hidden" name="category_id" value="<?= $category['id']; ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                                    </form>
+                                </div>
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -74,10 +84,52 @@
 
         <hr />
 
-
     </main>
 
+    <!-- Modal ustawiania limitu -->
+    <div class="modal fade" id="limitModal" tabindex="-1" aria-labelledby="limitModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="limitModalLabel">Ustaw limit dla: <span id="categoryName"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/settings/updateCategoryLimit">
+                    <div class="modal-body">
+                        <input type="hidden" name="category_id" id="categoryId">
+
+                        <label class="form-label">Miesięczny limit wydatków</label>
+                        <div class="input-group mb-3">
+                            <input type="number" name="limit" id="limitInput" class="form-control"
+                                placeholder="np. 500" step="0.01" min="0">
+                            <span class="input-group-text">zł</span>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <small>
+                                <i class="bi bi-lightbulb"></i> Otrzymasz ostrzeżenie gdy przekroczysz ten limit przy dodawaniu wydatku.
+                                Zostaw puste aby usunąć limit.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="submit" class="btn btn-warning">Zapisz limit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/limit.js"></script>
     <script>
+        // Obsługa modala - pobieranie limitu z API
+        const limitModal = document.getElementById('limitModal');
+        limitModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            handleLimitButtonClick(button);
+        });
+
         function validatePassword() {
             const newPassword = document.getElementById("newPassword").value;
             const confirmPassword = document.getElementById("confirmPassword").value;

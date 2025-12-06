@@ -8,6 +8,7 @@ use App\Controllers\HomeController;
 use App\Controllers\PageController;
 use App\Controllers\IncomeController;
 use App\Controllers\SettingsController;
+use App\Controllers\HistoryController;
 
 // Strony główne
 Router::add('GET', '/', [PageController::class, 'index']);
@@ -31,12 +32,19 @@ Router::add('GET', '/balance', [BalanceController::class, 'index']);
 Router::add('GET', '/balance', [BalanceController::class, 'index']);
 Router::add('POST', '/api/balance', [BalanceController::class, 'getBalanceData']);
 
+// Historia transakcji
+Router::add('GET', '/history', [HistoryController::class, 'index']);
+
+// API endpoints
+Router::add('GET', '/api/limit', [SettingsController::class, 'limit']);
+
 // Ustawienia
 Router::add('GET', '/settings', [SettingsController::class, 'index']);
 Router::add('POST', '/settings/addIncomeCategory', [SettingsController::class, 'addIncomeCategory']);
 Router::add('POST', '/settings/removeIncomeCategory', [SettingsController::class, 'removeIncomeCategory']);
 Router::add('POST', '/settings/addExpenseCategory', [SettingsController::class, 'addExpenseCategory']);
 Router::add('POST', '/settings/removeExpenseCategory', [SettingsController::class, 'removeExpenseCategory']);
+Router::add('POST', '/settings/updateCategoryLimit', [SettingsController::class, 'updateCategoryLimit']);
 
 Router::add('POST', '/settings/changeUserName', [SettingsController::class, 'changeUserName']);
 Router::add('POST', '/settings/changePassword', [SettingsController::class, 'changePassword']);

@@ -8,7 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="./img/favicon.svg" type="image/png">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -30,7 +29,7 @@
             </div>
 
             <div class="text-center my-4">
-                <a id="goToHistoryButton" href="./history.php" class="btn btn-info">Histora transakcji</a>
+                <a id="goToHistoryButton" href="/history" class="btn btn-info">Historia transakcji</a>
             </div>
 
             <div class="modal fade" id="balanceModal" tabindex="-1" aria-labelledby="balanceModalLabel"
@@ -100,16 +99,17 @@
                         </thead>
                         <tbody>
                             <?php foreach ($incomeCategories as $category): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($category['income_category_name']); ?></td>
-                                    <td class="fw-bold">
-                                        <?php echo number_format($category['total_incomes'], 2, ',', ' ') . " PLN"; ?>
-                                    </td>
-                                </tr>
+                                <?php if ($category['total_incomes'] > 0): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($category['income_category_name']); ?></td>
+                                        <td class="fw-bold">
+                                            <?php echo number_format($category['total_incomes'], 2, ',', ' ') . " PLN"; ?>
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                    <canvas id="incomeChart" width="200" height="200"></canvas>
                 </div>
 
                 <!-- Wydatki -->
@@ -126,25 +126,43 @@
                         <tbody>
 
                             <?php foreach ($expenseCategories as $category): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($category['expense_category_name']); ?></td>
-                                    <td class="fw-bold">
-                                        <?php echo number_format($category['total_expenses'], 2, ',', ' ') . " PLN"; ?>
-                                    </td>
-                                </tr>
+                                <?php if ($category['total_expenses'] > 0): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($category['expense_category_name']); ?></td>
+                                        <td class="fw-bold">
+                                            <?php echo number_format($category['total_expenses'], 2, ',', ' ') . " PLN"; ?>
+                                        </td>
+                                    </tr>
+                                    <?php if (isset($category['spending_limit']) && $category['spending_limit'] > 0): ?>
+                                        <tr>
+                                            <td colspan="2">
+                                                <?php
+                                                $spent = $category['total_expenses'];
+                                                $limit = $category['spending_limit'];
+                                                $percentage = $limit > 0 ? min(100, ($spent / $limit) * 100) : 0;
+                                                $progressColor = $percentage >= 100 ? 'bg-danger' : ($percentage >= 80 ? 'bg-warning' : 'bg-success');
+                                                ?>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar <?= $progressColor; ?>" role="progressbar"
+                                                        style="width: <?= $percentage; ?>%"
+                                                        aria-valuenow="<?= $percentage; ?>" aria-valuemin="0" aria-valuemax="100">
+                                                        <?= number_format($spent, 2); ?> / <?= number_format($limit, 2); ?> PLN (<?= round($percentage); ?>%)
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                    <canvas id="expenseChart" width="200" height="200"></canvas>
                 </div>
             </div>
         </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../../public/js/balance-script.js"></script>
-    <script src="../../../public/js/transaction-charts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/balance-script.js"></script>
 
 </body>
 

@@ -37,14 +37,15 @@ class BalanceModel
     {
         $stmt = $this->db->prepare("
             SELECT ecatu.name AS expense_category_name, 
-                   COALESCE(SUM(e.amount), 0) AS total_expenses
+                   COALESCE(SUM(e.amount), 0) AS total_expenses,
+                   ecatu.spending_limit
             FROM expenses_category_assigned_to_users ecatu
             LEFT JOIN expenses e 
                    ON ecatu.id = e.expense_category_assigned_to_user_id
                    AND e.user_id = ?
                    AND e.date_of_expense BETWEEN ? AND ?
             WHERE ecatu.user_id = ?
-            GROUP BY ecatu.id, ecatu.name
+            GROUP BY ecatu.id, ecatu.name, ecatu.spending_limit
             ORDER BY ecatu.name;
         ");
         $stmt->execute([$userId, $startDate, $endDate, $userId]);

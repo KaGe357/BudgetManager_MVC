@@ -4,9 +4,13 @@ Prosty menedżer budżetu domowego napisany w PHP (architektura MVC) z własnym 
 
 ## Funkcje
 - Rejestracja i logowanie użytkowników
-- Dodawanie przychodów i wydatków
-- Przegląd bilansu oraz ostatnich transakcji
-- Podstawowe ustawienia konta i kategorii (przychody/wydatki)
+- Dodawanie przychodów i wydatków z komentarzem i datą
+- Dashboard z wykresami przychodów/wydatków (Chart.js)
+- Przegląd bilansu z możliwością wyboru zakresu dat
+- Historia transakcji z paginacją
+- Limity wydatków na kategorie z wizualizacją procentową
+- Zarządzanie kategoriami i metodami płatności
+- Ustawienia konta (zmiana nazwy, hasła, usuwanie konta)
 
 ## Stos technologiczny
 - PHP 7.4+ (zalecane 8.0+)
@@ -47,23 +51,14 @@ http://localhost:8000/
 ```
 Rejestracja: `/register`, logowanie: `/login`.
 
-## Routing (skrót)
-Zdefiniowany w `routes/web.php`:
-- GET `/` → `PageController@index`
-- GET `/home` → `HomeController@index`
-- GET `/login` → `AuthController@showLoginForm`
-- POST `/login` → `AuthController@login`
-- GET `/register` → `AuthController@showRegisterForm`
-- POST `/register` → `AuthController@register`
-- GET `/logout` → `AuthController@logout`
-- GET `/income/add` → `IncomeController@add`
-- POST `/income/save` → `IncomeController@save`
-- GET `/expense/add` → `ExpenseController@add`
-- POST `/expense/save` → `ExpenseController@save`
-- GET `/balance` → `BalanceController@index`
-- POST `/api/balance` → `BalanceController@getBalanceData`
-- GET `/settings` → `SettingsController@index`
-- ...oraz akcje ustawień konta i kategorii
+## Główne endpointy
+- `/` - strona powitalna
+- `/login`, `/register`, `/logout` - autoryzacja
+- `/home` - dashboard z wykresami
+- `/income/add`, `/expense/add` - dodawanie transakcji
+- `/balance` - bilans z filtrami dat
+- `/history` - historia wszystkich transakcji
+- `/settings` - zarządzanie kategoriami i kontem
 
 ## Struktura projektu (wybrane)
 - `public/index.php` – front controller dla serwera www

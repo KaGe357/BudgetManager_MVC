@@ -25,7 +25,7 @@ class SettingsController
 
         $userId = SessionHelper::get('user')['id'];
         $incomeCategories = $this->settingsModel->getIncomeCategories($userId);
-        $expenseCategories = $this->settingsModel->getExpenseCategories($userId);
+        $expenseCategories = $this->settingsModel->getExpenseCategoriesWithLimits($userId);
 
         require __DIR__ . '/../Views/settings.php';
     }
@@ -48,6 +48,37 @@ class SettingsController
     public function removeExpenseCategory()
     {
         $this->handleCategoryAction('removeExpenseCategory', 'category_id');
+    }
+
+    public function updateCategoryLimit()
+    {
+        SessionHelper::start();
+
+        if (!SessionHelper::has('user') || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /settings');
+            exit();
+        }
+
+        $userId = SessionHelper::get('user')['id'];
+        $categoryId = $_POST['category_id'] ?? null;
+        $limit = $_POST['limit'] ?? null;
+
+        if (!$categoryId) {
+            SessionHelper::set('error', 'Nieprawidłowe dane.');
+            header('Location: /settings');
+            exit();
+        }
+
+        $success = $this->settingsModel->updateCategoryLimit($userId, $categoryId, $limit);
+
+        if ($success) {
+            SessionHelper::set('success', 'Limit został zaktualizowany.');
+        } else {
+            SessionHelper::set('error', 'Nie udało się zaktualizować limitu.');
+        }
+
+        header('Location: /settings');
+        exit();
     }
 
     private function handleCategoryAction($method, $field)
@@ -161,11 +192,36 @@ class SettingsController
 
         if ($deleted) {
             SessionHelper::destroy(); // Wylogowanie użytkownika
-            header('Location: /register'); // Można przekierować na stronę powitalną
+            header('Location: /register'); // Przekierowanie do rejestracji
         } else {
             SessionHelper::set('error', 'Nie udało się usunąć konta.');
             header('Location: /settings/account');
         }
+        exit();
+    }
+
+    // API endpoint - zwraca limit dla kategorii w formacie JSON
+    public function limit()
+    {
+        SessionHelper::start();
+        header('Content-Type: application/json; charset=utf-8');
+
+        if (!SessionHelper::has('user')) {
+            echo json_encode(['error' => 'Unauthorized'], JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
+        $userId = SessionHelper::get('user')['id'];
+        $categoryName = $_GET['category'] ?? null;
+
+        if (!$categoryName) {
+            echo json_encode(['error' => 'Category name required'], JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
+        $limit = $this->settingsModel->getLimit($userId, urldecode($categoryName));
+
+        echo json_encode(['limit' => $limit], JSON_UNESCAPED_UNICODE);
         exit();
     }
 }
