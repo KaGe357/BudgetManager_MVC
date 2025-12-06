@@ -55,9 +55,9 @@
                 <form action="login" method="POST">
                     <h1 class="h3 mb-3 fw-normal">Zaloguj się</h1>
                     <?php
-                    if (isset($_SESSION['blad'])) {
-                        echo '<div class="alert alert-danger">' . $_SESSION['blad'] . '</div>';
-                        unset($_SESSION['blad']);
+                    if (App\Helpers\SessionHelper::has('error')) {
+                        echo '<div class="alert alert-danger">' . App\Helpers\SessionHelper::get('error') . '</div>';
+                        App\Helpers\SessionHelper::remove('error');
                     }
                     ?>
                     <div class="form">
