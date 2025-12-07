@@ -168,7 +168,17 @@ body{
     margin: 20px;
 }
 
+.feature-tile {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-radius: 10px;
+}
 
+.feature-tile:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
 
   @media (max-width: 576px) {
     .navbar-nav {
@@ -190,3 +200,4 @@ body{
         flex-direction: column; 
     }
 }
+

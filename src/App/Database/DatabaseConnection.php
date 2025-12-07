@@ -28,7 +28,7 @@ class DatabaseConnection
 
             if (!$databaseExists) {
                 $pdo->exec("CREATE DATABASE `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-                echo "Baza danych `$dbName` została utworzona.\n";
+                // Baza danych została utworzona
             }
 
             $this->pdo = new PDO(
