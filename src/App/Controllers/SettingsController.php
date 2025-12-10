@@ -200,7 +200,7 @@ class SettingsController
         exit();
     }
 
-    // API endpoint - zwraca limit dla kategorii w formacie JSON
+    // API endpoint - zwraca limit dla kategorii (używane w ustawieniach)
     public function limit()
     {
         SessionHelper::start();
@@ -219,9 +219,10 @@ class SettingsController
             exit();
         }
 
-        $limit = $this->settingsModel->getLimit($userId, urldecode($categoryName));
+        $categoryName = urldecode($categoryName);
+        $limit = $this->settingsModel->getLimit($userId, $categoryName);
 
-        echo json_encode(['limit' => $limit], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['limit' => (float)$limit], JSON_UNESCAPED_UNICODE);
         exit();
     }
 }

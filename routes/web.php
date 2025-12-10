@@ -36,6 +36,7 @@ Router::add('POST', '/api/balance', [BalanceController::class, 'getBalanceData']
 Router::add('GET', '/history', [HistoryController::class, 'index']);
 
 // API endpoints
+Router::add('GET', '/api/expense/limit', [ExpenseController::class, 'getLimitInfo']);
 Router::add('GET', '/api/limit', [SettingsController::class, 'limit']);
 
 // Ustawienia
@@ -56,5 +57,18 @@ Router::add('POST', '/settings/account/update', [SettingsController::class, 'upd
 Router::add('POST', '/settings/deleteAccount', [SettingsController::class, 'deleteAccount']);
 
 
+// Obsługa dynamicznych parametrów URL przed dispatch
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+if (preg_match('#^/api/expense/limit/(.+)$#', $uri, $matches)) {
+    $_GET['category'] = urldecode($matches[1]);
+    $uri = '/api/expense/limit';
+}
+
+if (preg_match('#^/api/limit/(.+)$#', $uri, $matches)) {
+    $_GET['category'] = urldecode($matches[1]);
+    $uri = '/api/limit';
+}
+
 // Obsługa routingu
-Router::dispatch(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), $_SERVER['REQUEST_METHOD']);
+Router::dispatch($uri, $_SERVER['REQUEST_METHOD']);

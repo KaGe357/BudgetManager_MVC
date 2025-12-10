@@ -131,7 +131,7 @@ class SettingsModel
         ");
         $stmt->execute([$userId, $categoryName]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         return $result ? $result['spending_limit'] : null;
     }
 

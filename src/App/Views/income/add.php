@@ -19,7 +19,7 @@
             <div class="d-flex justify-content-center border py-4">
                 <form action="/income/save" method="POST">
                     <section>
-                        <div class="mb-3">
+                        <div class="mb-3 pt-4">
                             <label for="amountInput" class="form-label">Kwota</label>
                             <input
                                 type="number"

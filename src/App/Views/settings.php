@@ -59,7 +59,10 @@
                         <?php foreach ($expenseCategories as $category): ?>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span><?= htmlspecialchars($category['name']); ?></span>
-                                <div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <?php if (!empty($category['spending_limit']) && $category['spending_limit'] > 0): ?>
+                                        <small class="text-muted">Limit: <?= number_format($category['spending_limit'], 2, ',', ' '); ?> zł</small>
+                                    <?php endif; ?>
                                     <button class="btn btn-warning btn-sm limit-btn" data-bs-toggle="modal" data-bs-target="#limitModal"
                                         data-category-id="<?= $category['id']; ?>"
                                         data-category-name="<?= htmlspecialchars($category['name']); ?>">

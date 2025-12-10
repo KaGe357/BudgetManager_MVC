@@ -45,4 +45,32 @@ class ExpenseController
             exit();
         }
     }
+
+    public function getLimitInfo()
+    {
+        SessionHelper::start();
+        header('Content-Type: application/json; charset=utf-8');
+
+        if (!SessionHelper::has('user')) {
+            echo json_encode(['error' => 'Unauthorized'], JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
+        $userId = SessionHelper::get('user')['id'];
+        $categoryName = $_GET['category'] ?? null;
+
+        if (!$categoryName) {
+            echo json_encode(['error' => 'Category name required'], JSON_UNESCAPED_UNICODE);
+            exit();
+        }
+
+        $expenseModel = new ExpenseModel();
+        $data = $expenseModel->getLimitWithSpent($userId, $categoryName);
+
+        echo json_encode([
+            'limit' => $data['limit'],
+            'spent' => $data['spent']
+        ], JSON_UNESCAPED_UNICODE);
+        exit();
+    }
 }
