@@ -2,13 +2,14 @@
 
 DROP TABLE IF EXISTS `expenses`;
 CREATE TABLE `expenses` (
-  `id` int(11) unsigned NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `expense_category_assigned_to_user_id` int(11) unsigned NOT NULL,
   `payment_method_assigned_to_user_id` int(11) unsigned NOT NULL,
   `amount` decimal(8,2) NOT NULL,
   `date_of_expense` date NOT NULL,
-  `expense_comment` varchar(100) NOT NULL
+  `expense_comment` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 DROP TABLE IF EXISTS `expenses_category_assigned_to_users`;
@@ -27,12 +28,13 @@ CREATE TABLE `expenses_category_default` (
 
 DROP TABLE IF EXISTS `incomes`;
 CREATE TABLE `incomes` (
-  `id` int(11) unsigned NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `income_category_assigned_to_user_id` int(11) unsigned NOT NULL,
   `amount` decimal(8,2) NOT NULL,
   `date_of_income` date NOT NULL,
-  `income_comment` varchar(100) NOT NULL
+  `income_comment` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 DROP TABLE IF EXISTS `incomes_category_assigned_to_users`;
