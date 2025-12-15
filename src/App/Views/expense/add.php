@@ -16,6 +16,8 @@
         <div class="container">
             <?php include __DIR__ . '/../nav.php'; ?>
 
+            <?php require_once __DIR__ . '/../alerts.php'; ?>
+
             <div class="d-flex justify-content-center border py-4 position-relative">
                 <form action="/expense/save" method="POST" id="expenseForm">
                     <section>

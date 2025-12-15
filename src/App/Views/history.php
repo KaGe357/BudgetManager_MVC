@@ -16,6 +16,8 @@
             <div class="col-lg-10">
                 <h2 class="mb-4">Historia Transakcji</h2>
 
+                <?php require_once __DIR__ . '/alerts.php'; ?>
+
                 <?php if (empty($transactions)): ?>
                     <div class="alert alert-info">
                         Brak transakcji do wyświetlenia.
@@ -30,6 +32,7 @@
                                     <th>Kwota</th>
                                     <th>Typ</th>
                                     <th>Komentarz</th>
+                                    <th>Akcje</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,6 +50,21 @@
                                             </span>
                                         </td>
                                         <td><?php echo htmlspecialchars($transaction['comment'] ?: '-'); ?></td>
+                                        <td>
+                                            <?php if ($transaction['type'] === 'expense'): ?>
+                                                <form method="POST" action="/history/expense/delete" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten wydatek?');">
+                                                    <input type="hidden" name="expense_id" value="<?php echo (int)$transaction['id']; ?>">
+                                                    <input type="hidden" name="page" value="<?php echo (int)$page; ?>">
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm">Usuń</button>
+                                                </form>
+                                            <?php else: ?>
+                                                <form method="POST" action="/history/income/delete" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten przychód?');">
+                                                    <input type="hidden" name="income_id" value="<?php echo (int)$transaction['id']; ?>">
+                                                    <input type="hidden" name="page" value="<?php echo (int)$page; ?>">
+                                                    <button type="submit" class="btn btn-outline-success btn-sm">Usuń</button>
+                                                </form>
+                                            <?php endif; ?>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>

@@ -36,4 +36,64 @@ class HistoryController
         // Załaduj widok
         require_once __DIR__ . '/../Views/history.php';
     }
+
+    public function deleteExpense()
+    {
+        if (!SessionHelper::has('user')) {
+            header('Location: /login');
+            exit;
+        }
+
+        $user = SessionHelper::get('user');
+        $userId = $user['id'];
+        $expenseId = isset($_POST['expense_id']) ? (int)$_POST['expense_id'] : 0;
+        $page = isset($_POST['page']) ? max(1, (int)$_POST['page']) : 1;
+
+        if ($expenseId <= 0) {
+            SessionHelper::set('error', 'Nieprawidłowy identyfikator wydatku.');
+            header('Location: /history?page=' . $page);
+            exit;
+        }
+
+        $deleted = $this->historyModel->deleteExpense($userId, $expenseId);
+
+        if ($deleted) {
+            SessionHelper::set('success', 'Wydatek został usunięty.');
+        } else {
+            SessionHelper::set('error', 'Nie udało się usunąć wydatku.');
+        }
+
+        header('Location: /history?page=' . $page);
+        exit;
+    }
+
+    public function deleteIncome()
+    {
+        if (!SessionHelper::has('user')) {
+            header('Location: /login');
+            exit;
+        }
+
+        $user = SessionHelper::get('user');
+        $userId = $user['id'];
+        $incomeId = isset($_POST['income_id']) ? (int)$_POST['income_id'] : 0;
+        $page = isset($_POST['page']) ? max(1, (int)$_POST['page']) : 1;
+
+        if ($incomeId <= 0) {
+            SessionHelper::set('error', 'Nieprawidłowy identyfikator przychodu.');
+            header('Location: /history?page=' . $page);
+            exit;
+        }
+
+        $deleted = $this->historyModel->deleteIncome($userId, $incomeId);
+
+        if ($deleted) {
+            SessionHelper::set('success', 'Przychód został usunięty.');
+        } else {
+            SessionHelper::set('error', 'Nie udało się usunąć przychodu.');
+        }
+
+        header('Location: /history?page=' . $page);
+        exit;
+    }
 }

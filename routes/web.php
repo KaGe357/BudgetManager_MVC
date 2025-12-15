@@ -34,6 +34,8 @@ Router::add('POST', '/api/balance', [BalanceController::class, 'getBalanceData']
 
 // Historia transakcji
 Router::add('GET', '/history', [HistoryController::class, 'index']);
+Router::add('POST', '/history/expense/delete', [HistoryController::class, 'deleteExpense']);
+Router::add('POST', '/history/income/delete', [HistoryController::class, 'deleteIncome']);
 
 // API endpoints
 Router::add('GET', '/api/expense/limit', [ExpenseController::class, 'getLimitInfo']);

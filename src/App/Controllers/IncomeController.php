@@ -29,9 +29,12 @@ class IncomeController
         $result = $incomeModel->saveIncome($userId, $amount, $date, $categoryId, $comment);
 
         if ($result) {
-            header('Location: /home');
+            SessionHelper::set('success', 'Przychód został dodany.');
+            header('Location: /income/add');
         } else {
-            echo "Wystąpił błąd podczas zapisywania dochodu.";
+            SessionHelper::set('error', 'Wystąpił błąd podczas zapisywania przychodu.');
+            header('Location: /income/add');
         }
+        exit();
     }
 }

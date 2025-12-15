@@ -39,9 +39,14 @@ class ExpenseController
             $comment = $_POST['comment'] ?? '';
 
             $expenseModel = new ExpenseModel();
-            $expenseModel->saveExpense($user['id'], $amount, $date, $categoryId, $paymentMethodId, $comment);
+            $result = $expenseModel->saveExpense($user['id'], $amount, $date, $categoryId, $paymentMethodId, $comment);
 
-            header('Location: /home');
+            if ($result !== false) {
+                SessionHelper::set('success', 'Wydatek został dodany.');
+            } else {
+                SessionHelper::set('error', 'Wystąpił błąd podczas zapisywania wydatku.');
+            }
+            header('Location: /expense/add');
             exit();
         }
     }
