@@ -59,8 +59,54 @@ body{
     background-repeat: no-repeat;
     background-attachment: fixed; 
     font-size: 1rem;
-
 }
+
+.bg-gradient-purple {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: white;
+    font-weight: 500;
+}
+
+.navbar-dark .dropdown-menu {
+    background-color: #764ba2;
+}
+
+.navbar-dark .dropdown-item {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-dark .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Navbar brand hover effect */
+.navbar-brand {
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.navbar-brand img {
+    transition: transform 0.3s ease;
+}
+
 .center{
     display: flex;
     align-items: center;
@@ -178,6 +224,69 @@ body{
     background-color: #f8f9fa;
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.hero-section {
+    min-height: 10vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    opacity: 0.95;
+}
+
+.hero-section h1 {
+    color: white;
+}
+
+.hero-section .lead {
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Logo shadow effect */
+.logo-glow {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    transition: filter 0.3s ease;
+}
+
+.logo-glow:hover {
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.4));
+}
+
+/* Feature Cards */
+.feature-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    border-radius: 15px;
+    background: white;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    line-height: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 50vh;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+    }
 }
 
   @media (max-width: 576px) {

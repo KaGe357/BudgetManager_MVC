@@ -2,8 +2,13 @@
 
 
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light nav_menu">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-purple nav_menu">
         <div class="container-fluid">
+
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="/img/logo budget manager.svg" alt="HomeBudget Logo" width="40" height="40" class="me-2 rounded">
+                <span class="fw-semibold">HomeBudget</span>
+            </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

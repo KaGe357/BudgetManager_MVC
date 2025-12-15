@@ -32,11 +32,21 @@
                 <!-- Dochody -->
                 <div class="col-md-6">
                     <h3>Dochody</h3>
+
+                    <form method="POST" action="/settings/addIncomeCategory" class="mb-3">
+                        <input type="text" name="income_category_name" class="form-control mb-2" placeholder="Nowa kategoria" required>
+                        <button type="submit" class="btn btn-primary">Dodaj kategorię</button>
+                    </form>
+
                     <ul class="list-group">
-                        <?php foreach ($incomeCategories as $category): ?>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <?php
+                        $newCategoryId = App\Helpers\SessionHelper::get('new_category_id');
+                        foreach ($incomeCategories as $category):
+                            $isNew = ($newCategoryId && $category['id'] == $newCategoryId);
+                        ?>
+                            <li class="list-group-item d-flex justify-content-between align-items-center <?= $isNew ? 'bg-success bg-opacity-25' : '' ?>">
                                 <?= htmlspecialchars($category['name']); ?>
-                                <form method="POST" action="/settings/removeIncomeCategory" style="display:inline;">
+                                <form method="POST" action="/settings/removeIncomeCategory" style="display:inline;" onsubmit="return confirm('Czy na pewno chcesz usunąć tę kategorię?');">
                                     <input type="hidden" name="category_id" value="<?= $category['id']; ?>">
                                     <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                                 </form>
@@ -44,20 +54,24 @@
                             </li>
                         <?php endforeach; ?>
                     </ul>
-
-                    <form method="POST" action="/settings/addIncomeCategory" class="mt-3">
-                        <input type="text" name="income_category_name" class="form-control mb-2" placeholder="Nowa kategoria" required>
-                        <button type="submit" class="btn btn-secondary">Dodaj kategorię</button>
-                    </form>
                 </div>
 
 
                 <!-- Wydatki -->
                 <div class="col-md-6">
                     <h3>Wydatki</h3>
+
+                    <form method="POST" action="/settings/addExpenseCategory" class="mb-3">
+                        <input type="text" name="expense_category_name" class="form-control mb-2" placeholder="Nowa kategoria" required>
+                        <button type="submit" class="btn btn-primary">Dodaj kategorię</button>
+                    </form>
+
                     <ul class="list-group">
-                        <?php foreach ($expenseCategories as $category): ?>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <?php
+                        foreach ($expenseCategories as $category):
+                            $isNew = ($newCategoryId && $category['id'] == $newCategoryId);
+                        ?>
+                            <li class="list-group-item d-flex justify-content-between align-items-center <?= $isNew ? 'bg-success bg-opacity-25' : '' ?>">
                                 <span><?= htmlspecialchars($category['name']); ?></span>
                                 <div class="d-flex align-items-center gap-2">
                                     <?php if (!empty($category['spending_limit']) && $category['spending_limit'] > 0): ?>
@@ -68,7 +82,7 @@
                                         data-category-name="<?= htmlspecialchars($category['name']); ?>">
                                         Limit
                                     </button>
-                                    <form method="POST" action="/settings/removeExpenseCategory" style="display:inline;">
+                                    <form method="POST" action="/settings/removeExpenseCategory" style="display:inline;" onsubmit="return confirm('Czy na pewno chcesz usunąć tę kategorię?');">
                                         <input type="hidden" name="category_id" value="<?= $category['id']; ?>">
                                         <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                                     </form>
@@ -76,14 +90,16 @@
                             </li>
                         <?php endforeach; ?>
                     </ul>
-
-                    <form method="POST" action="/settings/addExpenseCategory" class="mt-3">
-                        <input type="text" name="expense_category_name" class="form-control mb-2" placeholder="Nowa kategoria" required>
-                        <button type="submit" class="btn btn-secondary">Dodaj kategorię</button>
-                    </form>
                 </div>
             </div>
         </section>
+
+        <?php
+        // Wyczyść ID nowej kategorii po wyświetleniu
+        if (App\Helpers\SessionHelper::has('new_category_id')) {
+            App\Helpers\SessionHelper::remove('new_category_id');
+        }
+        ?>
 
         <hr />
 

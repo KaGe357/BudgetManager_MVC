@@ -29,7 +29,7 @@
             </div>
 
             <div class="text-center my-4">
-                <a id="goToHistoryButton" href="/history" class="btn btn-info">Historia transakcji</a>
+                <a id="goToHistoryButton" href="/history" class="btn btn-primary">Historia transakcji</a>
             </div>
 
             <div class="modal fade" id="balanceModal" tabindex="-1" aria-labelledby="balanceModalLabel"

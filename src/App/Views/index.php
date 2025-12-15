@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Manager</title>
+    <title>HomeBudget - Zarządzaj swoimi finansami</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../../../style.css">
     <link rel="icon" href="./img/favicon.svg" type="image/png">
@@ -13,49 +13,68 @@
 
 <body>
     <main>
-        <header>
-            <div class="container-fluid fs-4">
-                <div class="main-page">
-                    <h1 class="text-center oxanium p-1"><img src="./img/logo budget manager.svg" id="img" class="logo" width="100" alt="Logo">
-                        Kontroluj swoje finanse z łatwością - Planuj, oszczędzaj, osiągaj cele!</h1>
-                </div>
-        </header>
 
-        <section class="text-center pt-2">
-            <a href="/login" class="btn btn-secondary mx-1">
-                Zaloguj
-            </a>
-            <a href="/register" class="btn btn-secondary mx-1">
-                Zarejestruj
-            </a>
+        <section class="hero-section bg-light py-5">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <img src="./img/logo budget manager.svg" class="rounded mb-3" width="120" alt="HomeBudget Logo">
+                    <h1 class="display-5 fw-bold mb-3">HomeBudget</h1>
+                    <p class="lead text-muted mb-4">
+                        Pełna kontrola nad domowymi finansami - prosto, szybko, za darmo!
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <a href="/login" class="btn btn-light btn-lg px-4">
+                            Zaloguj się
+                        </a>
+                        <a href="/register" class="btn btn-warning btn-lg px-4 fw-semibold">
+                            Zacznij za darmo→
+                        </a>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section class="container mt-5">
-            <h2 class="text-center mb-2">Główne funkcje</h2>
-            <p class="text-center text-muted mb-4"><small>Kliknij na kafelek, aby zobaczyć podgląd</small></p>
-            <div class="row text-center">
-                <div class="col-md-3 mb-3">
-                    <div class="p-3 feature-tile" role="button" data-bs-toggle="modal" data-bs-target="#screenshotModal" data-bs-image="./img/dashboard.jpg" data-bs-title="Dashboard z wykresami">
-                        <h5>📊 Wykresy</h5>
-                        <p class="text-muted small">Wizualizacja finansów</p>
+
+        <section class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-2">Główne korzyści</h2>
+                <p class="text-muted">Kliknij na kafelek, aby zobaczyć podgląd</p>
+            </div>
+            <div class="row g-4 text-center">
+                <div class="col-md-3 col-sm-6">
+                    <div class="card h-100 shadow-sm feature-card" role="button" data-bs-toggle="modal" data-bs-target="#screenshotModal" data-bs-image="./img/dashboard.jpg" data-bs-title="Dashboard z wykresami">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                            <div class="feature-icon mb-3">📊</div>
+                            <h5 class="card-title fw-semibold mb-2">Wykresy finansowe</h5>
+                            <p class="card-text text-muted small mb-0">Wizualizuj swoje wydatki</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="p-3 feature-tile" role="button" data-bs-toggle="modal" data-bs-target="#screenshotModal" data-bs-image="./img/bilans.jpg" data-bs-title="Bilans z limitami">
-                        <h5>💰 Limity</h5>
-                        <p class="text-muted small">Kontrola wydatków</p>
+                <div class="col-md-3 col-sm-6">
+                    <div class="card h-100 shadow-sm feature-card" role="button" data-bs-toggle="modal" data-bs-target="#screenshotModal" data-bs-image="./img/bilans.jpg" data-bs-title="Bilans z limitami">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                            <div class="feature-icon mb-3">💰</div>
+                            <h5 class="card-title fw-semibold mb-2">Limity wydatków</h5>
+                            <p class="card-text text-muted small mb-0">Kontroluj budżet automatycznie</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="p-3 feature-tile" role="button" data-bs-toggle="modal" data-bs-target="#screenshotModal" data-bs-image="./img/historia.jpg" data-bs-title="Historia transakcji">
-                        <h5>📜 Historia</h5>
-                        <p class="text-muted small">Paginowane transakcje</p>
+                <div class="col-md-3 col-sm-6">
+                    <div class="card h-100 shadow-sm feature-card" role="button" data-bs-toggle="modal" data-bs-target="#screenshotModal" data-bs-image="./img/historia.jpg" data-bs-title="Historia transakcji">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                            <div class="feature-icon mb-3">📜</div>
+                            <h5 class="card-title fw-semibold mb-2">Historia transakcji</h5>
+                            <p class="card-text text-muted small mb-0">Wszystko w jednym miejscu</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="p-3 feature-tile" role="button" data-bs-toggle="modal" data-bs-target="#screenshotModal" data-bs-image="./img/kategorie.jpg" data-bs-title="Kategorie i ustawienia">
-                        <h5>⚙️ Kategorie</h5>
-                        <p class="text-muted small">Personalizacja ustawień</p>
+                <div class="col-md-3 col-sm-6">
+                    <div class="card h-100 shadow-sm feature-card" role="button" data-bs-toggle="modal" data-bs-target="#screenshotModal" data-bs-image="./img/kategorie.jpg" data-bs-title="Kategorie i ustawienia">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                            <div class="feature-icon mb-3">⚙️</div>
+                            <h5 class="card-title fw-semibold mb-2">Personalizacja</h5>
+                            <p class="card-text text-muted small mb-0">Twoje kategorie, Twoje reguły</p>
+                        </div>
                     </div>
                 </div>
             </div>

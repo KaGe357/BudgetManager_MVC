@@ -90,7 +90,12 @@ class SettingsController
         }
 
         $userId = SessionHelper::get('user')['id'];
-        $this->settingsModel->$method($userId, $_POST[$field]);
+        $result = $this->settingsModel->$method($userId, $_POST[$field]);
+
+        // Jeśli dodawanie KATEGORII, zapisz ID do sesji
+        if (($method === 'addIncomeCategory' || $method === 'addExpenseCategory') && $result) {
+            SessionHelper::set('new_category_id', $result);
+        }
 
         header('Location: /settings');
         exit();

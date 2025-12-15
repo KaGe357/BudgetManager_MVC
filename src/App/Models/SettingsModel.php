@@ -35,7 +35,8 @@ class SettingsModel
     public function addIncomeCategory($userId, $categoryName)
     {
         $stmt = $this->db->prepare("INSERT INTO incomes_category_assigned_to_users (user_id, name) VALUES (?, ?)");
-        return $stmt->execute([$userId, trim($categoryName)]);
+        $stmt->execute([$userId, trim($categoryName)]);
+        return $this->db->lastInsertId();
     }
 
     // Usuwanie kategorii dochodów (przenoszenie do "Inne")
@@ -66,7 +67,8 @@ class SettingsModel
     public function addExpenseCategory($userId, $categoryName)
     {
         $stmt = $this->db->prepare("INSERT INTO expenses_category_assigned_to_users (user_id, name) VALUES (?, ?)");
-        return $stmt->execute([$userId, trim($categoryName)]);
+        $stmt->execute([$userId, trim($categoryName)]);
+        return $this->db->lastInsertId();
     }
 
     // Usuwanie kategorii wydatków (przenoszenie do Inne")

@@ -32,13 +32,13 @@
             <h2>Ustawienia konta</h2>
             <form id="accountSettingsForm" style="max-width: 250px;">
                 <div class="mb-3">
-                    <button type="button" id="changeUserName" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#changeUserNameModal">
+                    <button type="button" id="changeUserName" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeUserNameModal">
                         Zmiana nazwy użytkownika
                     </button>
                 </div>
 
                 <div class="mb-3">
-                    <button type="button" id="changePassword" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                    <button type="button" id="changePassword" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                         Zmiana hasła
                     </button>
                 </div>
