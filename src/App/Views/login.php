@@ -53,6 +53,7 @@
         <div class="container center fs-4">
             <main class="form-signin w-50 m-auto bordered">
                 <form action="login" method="POST">
+                    <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                     <h1 class="h3 mb-3 fw-normal">Zaloguj się</h1>
                     <?php
                     if (App\Helpers\SessionHelper::has('error')) {

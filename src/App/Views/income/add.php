@@ -20,6 +20,7 @@
 
             <div class="d-flex justify-content-center border py-4">
                 <form action="/income/save" method="POST">
+                    <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                     <section>
                         <div class="mb-3 pt-4">
                             <label for="amountInput" class="form-label">Kwota</label>

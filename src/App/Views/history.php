@@ -53,12 +53,14 @@
                                         <td>
                                             <?php if ($transaction['type'] === 'expense'): ?>
                                                 <form method="POST" action="/history/expense/delete" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten wydatek?');">
+                                                    <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                                                     <input type="hidden" name="expense_id" value="<?php echo (int)$transaction['id']; ?>">
                                                     <input type="hidden" name="page" value="<?php echo (int)$page; ?>">
                                                     <button type="submit" class="btn btn-outline-danger btn-sm">Usuń</button>
                                                 </form>
                                             <?php else: ?>
                                                 <form method="POST" action="/history/income/delete" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten przychód?');">
+                                                    <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                                                     <input type="hidden" name="income_id" value="<?php echo (int)$transaction['id']; ?>">
                                                     <input type="hidden" name="page" value="<?php echo (int)$page; ?>">
                                                     <button type="submit" class="btn btn-outline-success btn-sm">Usuń</button>

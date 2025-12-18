@@ -43,16 +43,22 @@ class SettingsModel
     public function removeIncomeCategory($userId, $categoryId)
     {
         try {
+            // WERYFIKACJA: Sprawdź czy kategoria należy do użytkownika
+            if (!$this->incomeCategoryBelongsToUser($userId, $categoryId)) {
+                error_log("Próba usunięcia kategorii dochodu ({$categoryId}) przez nieuprawnionego użytkownika ({$userId})");
+                return false;
+            }
+
             $this->db->beginTransaction();
             $otherCategoryId = $this->getOrCreateOtherIncomeCategory($userId);
 
             // Przeniesienie dochodów do kategorii "Inne"
-            $stmt = $this->db->prepare("UPDATE incomes SET income_category_assigned_to_user_id = ? WHERE income_category_assigned_to_user_id = ?");
-            $stmt->execute([$otherCategoryId, $categoryId]);
+            $stmt = $this->db->prepare("UPDATE incomes SET income_category_assigned_to_user_id = ? WHERE income_category_assigned_to_user_id = ? AND user_id = ?");
+            $stmt->execute([$otherCategoryId, $categoryId, $userId]);
 
-            // Usunięcie kategorii
-            $stmt = $this->db->prepare("DELETE FROM incomes_category_assigned_to_users WHERE id = ?");
-            $stmt->execute([$categoryId]);
+            // Usunięcie kategorii (tylko jeśli należy do użytkownika)
+            $stmt = $this->db->prepare("DELETE FROM incomes_category_assigned_to_users WHERE id = ? AND user_id = ?");
+            $stmt->execute([$categoryId, $userId]);
 
             $this->db->commit();
             return true;
@@ -75,16 +81,22 @@ class SettingsModel
     public function removeExpenseCategory($userId, $categoryId)
     {
         try {
+            // WERYFIKACJA: Sprawdź czy kategoria należy do użytkownika
+            if (!$this->expenseCategoryBelongsToUser($userId, $categoryId)) {
+                error_log("Próba usunięcia kategorii wydatku ({$categoryId}) przez nieuprawnionego użytkownika ({$userId})");
+                return false;
+            }
+
             $this->db->beginTransaction();
             $otherCategoryId = $this->getOrCreateOtherExpenseCategory($userId);
 
             // Przeniesienie wydatków do kategorii "Inne"
-            $stmt = $this->db->prepare("UPDATE expenses SET expense_category_assigned_to_user_id = ? WHERE expense_category_assigned_to_user_id = ?");
-            $stmt->execute([$otherCategoryId, $categoryId]);
+            $stmt = $this->db->prepare("UPDATE expenses SET expense_category_assigned_to_user_id = ? WHERE expense_category_assigned_to_user_id = ? AND user_id = ?");
+            $stmt->execute([$otherCategoryId, $categoryId, $userId]);
 
-            // Usunięcie kategorii
-            $stmt = $this->db->prepare("DELETE FROM expenses_category_assigned_to_users WHERE id = ?");
-            $stmt->execute([$categoryId]);
+            // Usunięcie kategorii (tylko jeśli należy do użytkownika)
+            $stmt = $this->db->prepare("DELETE FROM expenses_category_assigned_to_users WHERE id = ? AND user_id = ?");
+            $stmt->execute([$categoryId, $userId]);
 
             $this->db->commit();
             return true;
@@ -93,6 +105,26 @@ class SettingsModel
             error_log("Błąd usuwania kategorii wydatków: " . $e->getMessage());
             return false;
         }
+    }
+
+    /**
+     * Sprawdza czy kategoria dochodu należy do użytkownika
+     */
+    private function incomeCategoryBelongsToUser($userId, $categoryId): bool
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM incomes_category_assigned_to_users WHERE id = ? AND user_id = ?");
+        $stmt->execute([$categoryId, $userId]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Sprawdza czy kategoria wydatku należy do użytkownika
+     */
+    private function expenseCategoryBelongsToUser($userId, $categoryId): bool
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM expenses_category_assigned_to_users WHERE id = ? AND user_id = ?");
+        $stmt->execute([$categoryId, $userId]);
+        return $stmt->fetchColumn() > 0;
     }
 
     // Tworzenie lub pobieranie kategorii "Inne" dla dochodów

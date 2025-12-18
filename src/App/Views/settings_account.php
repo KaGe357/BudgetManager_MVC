@@ -59,6 +59,7 @@
                     </div>
                     <form method="POST" action="/settings/changeUserName">
                         <div class="modal-body">
+                            <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                             <label for="newUserName" class="form-label">Nowa nazwa użytkownika</label>
                             <input type="text" name="newUserName" id="newUserName" class="form-control" required>
                         </div>
@@ -81,6 +82,7 @@
                     </div>
                     <form method="POST" action="/settings/changePassword" onsubmit="return validatePassword()">
                         <div class="modal-body">
+                            <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                             <label for="currentPassword" class="form-label">Obecne hasło</label>
                             <input type="password" name="currentPassword" id="currentPassword" class="form-control" required>
 
@@ -113,6 +115,7 @@
                     </div>
                     <div class="modal-footer">
                         <form method="POST" action="/settings/deleteAccount">
+                            <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                             <button type="submit" class="btn btn-danger">Usuń</button>
                         </form>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>

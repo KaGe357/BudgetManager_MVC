@@ -50,6 +50,7 @@ session_start(); // Upewnij się, że sesja jest uruchomiona
         <div class="container bordered p-5">
             <h1 class="fs-4">Zarejestruj się</h1>
             <form action="/register" method="POST">
+                <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                 Imię: <br> <input type="text" class="form-control" id="name" value="<?php
                                                                                     if (isset($_SESSION['fr_name'])) {
                                                                                         echo $_SESSION['fr_name'];

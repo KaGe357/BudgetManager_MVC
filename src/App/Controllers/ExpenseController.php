@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\ExpenseModel;
 use App\Helpers\SessionHelper;
+use App\Helpers\CsrfHelper;
 
 class ExpenseController
 {
@@ -30,6 +31,14 @@ class ExpenseController
         SessionHelper::start();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Walidacja tokenu CSRF
+            $token = $_POST['csrf_token'] ?? '';
+            if (!CsrfHelper::validateToken($token)) {
+                SessionHelper::set('error', 'Nieprawidłowe żądanie. Odśwież stronę i spróbuj ponownie.');
+                header('Location: /expense/add');
+                exit();
+            }
+
             $user = SessionHelper::get('user');
 
             $amount = $_POST['amount'];

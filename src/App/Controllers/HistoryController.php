@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\HistoryModel;
 use App\Helpers\SessionHelper;
+use App\Helpers\CsrfHelper;
 
 class HistoryController
 {
@@ -44,6 +45,14 @@ class HistoryController
             exit;
         }
 
+        // Walidacja tokenu CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if (!CsrfHelper::validateToken($token)) {
+            SessionHelper::set('error', 'Nieprawidłowe żądanie. Odśwież stronę i spróbuj ponownie.');
+            header('Location: /history');
+            exit;
+        }
+
         $user = SessionHelper::get('user');
         $userId = $user['id'];
         $expenseId = isset($_POST['expense_id']) ? (int)$_POST['expense_id'] : 0;
@@ -71,6 +80,14 @@ class HistoryController
     {
         if (!SessionHelper::has('user')) {
             header('Location: /login');
+            exit;
+        }
+
+        // Walidacja tokenu CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if (!CsrfHelper::validateToken($token)) {
+            SessionHelper::set('error', 'Nieprawidłowe żądanie. Odśwież stronę i spróbuj ponownie.');
+            header('Location: /history');
             exit;
         }
 

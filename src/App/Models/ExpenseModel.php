@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use App\Database\DatabaseConnection;
+use DateTime;
+use Exception;
 use PDO;
+use PDOException;
 
 class ExpenseModel
 {
@@ -33,10 +36,60 @@ class ExpenseModel
 
     public function saveExpense($userId, $amount, $date, $categoryId, $paymentMethodId, $comment)
     {
-        $stmt = $this->db->prepare(
-            'INSERT INTO expenses (user_id, amount, date_of_expense, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, expense_comment) VALUES (?, ?, ?, ?, ?, ?)'
-        );
-        return $stmt->execute([$userId, $amount, $date, $categoryId, $paymentMethodId, $comment]);
+        try {
+            // Sprawdź czy kategoria należy do użytkownika
+            $stmt = $this->db->prepare(
+                'SELECT COUNT(*) FROM expenses_category_assigned_to_users 
+             WHERE id = :categoryId AND user_id = :userId'
+            );
+            $stmt->execute([':categoryId' => $categoryId, ':userId' => $userId]);
+
+            if ($stmt->fetchColumn() == 0) {
+                throw new Exception('Nieprawidłowa kategoria wydatku.');
+            }
+
+            // Sprawdź czy metoda płatności należy do użytkownika
+            $stmt = $this->db->prepare(
+                'SELECT COUNT(*) FROM payment_methods_assigned_to_users 
+             WHERE id = :methodId AND user_id = :userId'
+            );
+            $stmt->execute([':methodId' => $paymentMethodId, ':userId' => $userId]);
+
+            if ($stmt->fetchColumn() == 0) {
+                throw new Exception('Nieprawidłowa metoda płatności.');
+            }
+
+            // Walidacja kwoty
+            if (!is_numeric($amount) || $amount <= 0) {
+                throw new Exception('Kwota musi być liczbą dodatnią.');
+            }
+
+            // Walidacja daty
+            $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+            if (!$dateObj || $dateObj->format('Y-m-d') !== $date) {
+                throw new Exception('Nieprawidłowy format daty.');
+            }
+
+            // Zapis wydatku
+            $stmt = $this->db->prepare(
+                'INSERT INTO expenses (user_id, amount, date_of_expense, 
+             expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, 
+             expense_comment) 
+             VALUES (:userId, :amount, :date, :categoryId, :methodId, :comment)'
+            );
+
+            return $stmt->execute([
+                ':userId' => $userId,
+                ':amount' => $amount,
+                ':date' => $date,
+                ':categoryId' => $categoryId,
+                ':methodId' => $paymentMethodId,
+                ':comment' => $comment
+            ]);
+        } catch (PDOException $e) {
+            error_log("Database error in saveExpense: " . $e->getMessage());
+            throw new Exception("Nie udało się zapisać wydatku.");
+        }
     }
 
     public function getLimitWithSpent($userId, $categoryName)

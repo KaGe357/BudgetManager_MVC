@@ -45,7 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ start_date: startDate, end_date: endDate }),
         })
-        .then(res => res.json())
+        .then(res => {
+            // Sprawdzenie statusu HTTP przed parsowaniem JSON
+            if (!res.ok) {
+                throw new Error(`Błąd HTTP: ${res.status} ${res.statusText}`);
+            }
+            return res.json();
+        })
         .then(data => {
            // console.log("Debug: Odpowiedź serwera:", data); // 🔍 Debugowanie
 
@@ -59,18 +65,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 const modal = bootstrap.Modal.getInstance(document.getElementById("balanceModal"));
                 if (modal) modal.hide();
             } else {
-                alert("Błąd serwera: " + data.error);
+                showError(data.error || "Nieznany błąd serwera");
             }
         })
         .catch(err => {
             console.error("Debug: Błąd fetch:", err);
-            alert("Wystąpił błąd: " + err.message);
+            showError("Wystąpił błąd: " + err.message);
         })
         .finally(() => {
             applyDateRange.disabled = false;
             applyDateRange.textContent = "Zastosuj";
         });
     });
+
+    /**
+     * Wyświetla komunikat błędu użytkownikowi
+     */
+    function showError(message) {
+        // Użyj Bootstrap Toast jeśli dostępny, w przeciwnym razie alert
+        const toastContainer = document.getElementById('toastContainer');
+        if (toastContainer) {
+            const toastHtml = `
+                <div class="toast align-items-center text-bg-danger border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">${message}</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            `;
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+            const toast = new bootstrap.Toast(toastContainer.lastElementChild);
+            toast.show();
+        } else {
+            alert(message);
+        }
+    }
 
     function updateTable(selector, items, nameKey, valueKey) {
         const tbody = document.querySelector(selector);

@@ -34,6 +34,7 @@
                     <h3>Dochody</h3>
 
                     <form method="POST" action="/settings/addIncomeCategory" class="mb-3">
+                        <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                         <input type="text" name="income_category_name" class="form-control mb-2" placeholder="Nowa kategoria" required>
                         <button type="submit" class="btn btn-primary">Dodaj kategorię</button>
                     </form>
@@ -47,6 +48,7 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center <?= $isNew ? 'bg-success bg-opacity-25' : '' ?>">
                                 <?= htmlspecialchars($category['name']); ?>
                                 <form method="POST" action="/settings/removeIncomeCategory" style="display:inline;" onsubmit="return confirm('Czy na pewno chcesz usunąć tę kategorię?');">
+                                    <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                                     <input type="hidden" name="category_id" value="<?= $category['id']; ?>">
                                     <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                                 </form>
@@ -62,6 +64,7 @@
                     <h3>Wydatki</h3>
 
                     <form method="POST" action="/settings/addExpenseCategory" class="mb-3">
+                        <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                         <input type="text" name="expense_category_name" class="form-control mb-2" placeholder="Nowa kategoria" required>
                         <button type="submit" class="btn btn-primary">Dodaj kategorię</button>
                     </form>
@@ -83,6 +86,7 @@
                                         Limit
                                     </button>
                                     <form method="POST" action="/settings/removeExpenseCategory" style="display:inline;" onsubmit="return confirm('Czy na pewno chcesz usunąć tę kategorię?');">
+                                        <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                                         <input type="hidden" name="category_id" value="<?= $category['id']; ?>">
                                         <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                                     </form>
@@ -115,6 +119,7 @@
                 </div>
                 <form method="POST" action="/settings/updateCategoryLimit">
                     <div class="modal-body">
+                        <?= \App\Helpers\CsrfHelper::getTokenField(); ?>
                         <input type="hidden" name="category_id" id="categoryId">
 
                         <label class="form-label">Miesięczny limit wydatków</label>

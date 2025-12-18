@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use App\Helpers\SessionHelper;
+use App\Helpers\CsrfHelper;
+use App\Validators\RegistrationValidator;
+
 
 class AuthController
 {
@@ -17,6 +20,14 @@ class AuthController
 
         if (!isset($_POST['login']) || !isset($_POST['haslo'])) {
             SessionHelper::set('error', 'Wypełnij wszystkie pola!');
+            header('Location: /login');
+            exit();
+        }
+
+        // Walidacja tokenu CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if (!CsrfHelper::validateToken($token)) {
+            SessionHelper::set('error', 'Nieprawidłowe żądanie. Odśwież stronę i spróbuj ponownie.');
             header('Location: /login');
             exit();
         }
@@ -55,71 +66,57 @@ class AuthController
     }
 
 
+
     public function register()
     {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            require __DIR__ . '/../Views/register.php';
+            return;
+        }
 
+        // Walidacja tokenu CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if (!CsrfHelper::validateToken($token)) {
+            SessionHelper::set('e_email', 'Nieprawidłowe żądanie. Odśwież stronę i spróbuj ponownie.');
+            header('Location: /register');
+            exit();
+        }
 
+        $validator = new RegistrationValidator();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $wszystko_OK = true;
-
-            // Pobierz dane z formularza
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $haslo1 = $_POST['haslo1'];
-            $haslo2 = $_POST['haslo2'];
-
-            // Walidacja danych
-            if (strlen($name) < 3 || strlen($name) > 20 || !ctype_alnum($name)) {
-                $wszystko_OK = false;
-                SessionHelper::set('e_name', 'Imię musi posiadać od 3 do 20 znaków i składać się tylko z liter i cyfr (bez polskich znaków)');
+        if (!$validator->validate($_POST)) {
+            // Zapisz błędy do sesji
+            foreach ($validator->getErrors() as $field => $error) {
+                SessionHelper::set("e_{$field}", $error);
             }
 
-            $emailB = filter_var($email, FILTER_SANITIZE_EMAIL);
-            if (!filter_var($emailB, FILTER_VALIDATE_EMAIL) || $emailB != $email) {
-                $wszystko_OK = false;
-                SessionHelper::set('e_email', 'Podaj poprawny adres email!');
-            }
-
-            if (strlen($haslo1) < 8 || strlen($haslo1) > 20 || $haslo1 !== $haslo2) {
-                $wszystko_OK = false;
-                SessionHelper::set('e_haslo', 'Hasło musi posiadać od 8 do 20 znaków i oba hasła muszą być identyczne');
-            }
-
-            $haslo_hash = password_hash($haslo1, PASSWORD_DEFAULT);
-
-            if (!isset($_POST['regulamin'])) {
-                $wszystko_OK = false;
-                SessionHelper::set('e_regulamin', 'Potwierdź akceptację regulaminu');
-            }
-
-            if ($wszystko_OK) {
-                $userModel = new UserModel();
-                if ($userModel->userExists($email)) {
-                    SessionHelper::set('e_email', 'Istnieje już konto przypisane do tego adresu e-mail!');
-                } else {
-                    $result = $userModel->createUser($name, $email, $haslo_hash);
-
-                    if ($result === true) {
-                        SessionHelper::set('udanarejestracja', true);
-                        header('Location: /');
-                        exit();
-                    } else {
-                        SessionHelper::set('e_email', 'Wystąpił błąd podczas tworzenia konta. Spróbuj ponownie później.');
-                    }
-                }
-            }
-
-            SessionHelper::set('fr_name', $name);
-            SessionHelper::set('fr_email', $email);
-            SessionHelper::set('fr_haslo1', $haslo1);
-            SessionHelper::set('fr_haslo2', $haslo2);
-            if (isset($_POST['regulamin'])) {
-                SessionHelper::set('fr_regulamin', true);
-            }
+            // Zachowaj wprowadzone wartości
+            SessionHelper::set('fr_name', $_POST['name'] ?? '');
+            SessionHelper::set('fr_email', $_POST['email'] ?? '');
 
             header('Location: /register');
             exit();
         }
+
+        $userModel = new UserModel();
+
+        if ($userModel->userExists($_POST['email'])) {
+            SessionHelper::set('e_email', 'Ten email jest już zarejestrowany.');
+            header('Location: /register');
+            exit();
+        }
+
+        $hashedPassword = password_hash($_POST['haslo1'], PASSWORD_DEFAULT);
+        $result = $userModel->createUser($_POST['name'], $_POST['email'], $hashedPassword);
+
+        if ($result === true) {
+            SessionHelper::set('udanarejestracja', true);
+            header('Location: /');
+            exit();
+        }
+
+        SessionHelper::set('e_email', 'Błąd podczas tworzenia konta.');
+        header('Location: /register');
+        exit();
     }
 }

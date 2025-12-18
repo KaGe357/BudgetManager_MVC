@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\SettingsModel;
 use App\Helpers\SessionHelper;
+use App\Helpers\CsrfHelper;
 
 class SettingsController
 {
@@ -59,12 +60,50 @@ class SettingsController
             exit();
         }
 
-        $userId = SessionHelper::get('user')['id'];
-        $categoryId = $_POST['category_id'] ?? null;
-        $limit = $_POST['limit'] ?? null;
+        // Walidacja tokenu CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if (!CsrfHelper::validateToken($token)) {
+            SessionHelper::set('error', 'Nieprawidłowe żądanie. Odśwież stronę i spróbuj ponownie.');
+            header('Location: /settings');
+            exit();
+        }
 
-        if (!$categoryId) {
-            SessionHelper::set('error', 'Nieprawidłowe dane.');
+        $userId = SessionHelper::get('user')['id'];
+
+        // Walidacja category_id - musi być liczbą całkowitą
+        $categoryId = filter_input(INPUT_POST, 'category_id', FILTER_VALIDATE_INT);
+        if ($categoryId === false || $categoryId === null) {
+            SessionHelper::set('error', 'Nieprawidłowe ID kategorii.');
+            header('Location: /settings');
+            exit();
+        }
+
+        // Walidacja limitu - opcjonalny, ale jeśli istnieje to musi być liczbą
+        $limit = $_POST['limit'] ?? null;
+        if ($limit !== null && $limit !== '') {
+            $limit = filter_var($limit, FILTER_VALIDATE_FLOAT);
+            if ($limit === false || $limit < 0) {
+                SessionHelper::set('error', 'Limit musi być liczbą dodatnią.');
+                header('Location: /settings');
+                exit();
+            }
+        } else {
+            $limit = null;
+        }
+
+        // Weryfikacja czy kategoria należy do użytkownika
+        $settingsModel = $this->settingsModel;
+        $userCategories = $settingsModel->getExpenseCategories($userId);
+        $categoryExists = false;
+        foreach ($userCategories as $cat) {
+            if ($cat['id'] == $categoryId) {
+                $categoryExists = true;
+                break;
+            }
+        }
+
+        if (!$categoryExists) {
+            SessionHelper::set('error', 'Kategoria nie należy do tego użytkownika.');
             header('Location: /settings');
             exit();
         }
@@ -89,6 +128,14 @@ class SettingsController
             exit();
         }
 
+        // Walidacja tokenu CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if (!CsrfHelper::validateToken($token)) {
+            SessionHelper::set('error', 'Nieprawidłowe żądanie. Odśwież stronę i spróbuj ponownie.');
+            header('Location: /settings');
+            exit();
+        }
+
         $userId = SessionHelper::get('user')['id'];
         $result = $this->settingsModel->$method($userId, $_POST[$field]);
 
@@ -109,6 +156,14 @@ class SettingsController
             exit();
         }
 
+        // Walidacja tokenu CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if (!CsrfHelper::validateToken($token)) {
+            SessionHelper::set('error', 'Nieprawidłowe żądanie. Odśwież stronę i spróbuj ponownie.');
+            header('Location: /settings/account');
+            exit();
+        }
+
         $userId = SessionHelper::get('user')['id'];
         $newUserName = trim($_POST['newUserName']);
 
@@ -125,6 +180,14 @@ class SettingsController
         SessionHelper::start();
         if (!SessionHelper::has('user')) {
             header('Location: /login');
+            exit();
+        }
+
+        // Walidacja tokenu CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if (!CsrfHelper::validateToken($token)) {
+            SessionHelper::set('error', 'Nieprawidłowe żądanie. Odśwież stronę i spróbuj ponownie.');
+            header('Location: /settings/account');
             exit();
         }
 
@@ -187,6 +250,14 @@ class SettingsController
         SessionHelper::start();
         if (!SessionHelper::has('user')) {
             header('Location: /login');
+            exit();
+        }
+
+        // Walidacja tokenu CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if (!CsrfHelper::validateToken($token)) {
+            SessionHelper::set('error', 'Nieprawidłowe żądanie. Odśwież stronę i spróbuj ponownie.');
+            header('Location: /settings/account');
             exit();
         }
 
