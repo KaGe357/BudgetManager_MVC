@@ -173,9 +173,4 @@ error_reporting(E_ALL);
 ## 👨‍💻 Autor
 **Kamil** - [KaGe357](https://github.com/KaGe357)
 
-## 📄 Licencja
-Projekt edukacyjny - użyj dowolnie do nauki i portfolio.
-
----
-
 **⭐ Jeśli projekt Ci się podoba, zostaw gwiazdkę na GitHubie!**
