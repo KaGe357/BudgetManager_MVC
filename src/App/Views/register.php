@@ -19,14 +19,20 @@ session_start(); // Upewnij się, że sesja jest uruchomiona
 
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-purple">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-purple nav_menu">
             <div class="container-fluid">
+
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <img src="/img/logo budget manager.svg" alt="HomeBudget Logo" width="40" height="40" class="me-2 rounded">
+                    <span class="fw-semibold">HomeBudget</span>
+                </a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto justify-content-center">
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav">
                         <li class="nav-item"><a href="./" class="nav-link active px-1" aria-current="page">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house mx-2" viewBox="0 0 16 16">
                                     <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />

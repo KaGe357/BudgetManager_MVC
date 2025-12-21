@@ -13,13 +13,19 @@
 <body>
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-purple">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-purple nav_menu">
             <div class="container-fluid">
+
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <img src="/img/logo budget manager.svg" alt="HomeBudget Logo" width="40" height="40" class="me-2 rounded">
+                    <span class="fw-semibold">HomeBudget</span>
+                </a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto justify-content-center">
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
                             <a href="./" class="nav-link active px-1" aria-current="page">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house mx-2" viewBox="0 0 16 16">

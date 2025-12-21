@@ -9,6 +9,7 @@ use App\Controllers\PageController;
 use App\Controllers\IncomeController;
 use App\Controllers\SettingsController;
 use App\Controllers\HistoryController;
+use App\Controllers\AiAdvisorController;
 
 // Strony główne
 Router::add('GET', '/', [PageController::class, 'index']);
@@ -57,6 +58,10 @@ Router::add('GET', '/settings/account', [SettingsController::class, 'accountSett
 Router::add('POST', '/settings/account/update', [SettingsController::class, 'updateAccount']);
 
 Router::add('POST', '/settings/deleteAccount', [SettingsController::class, 'deleteAccount']);
+
+// Doradca AI 
+Router::add('POST', '/api/ai/advice', [AiAdvisorController::class, 'generateAdvice']);
+Router::add('GET', '/api/ai/advice/latest', [AiAdvisorController::class, 'getLatestAdvice']);
 
 
 // Obsługa dynamicznych parametrów URL przed dispatch

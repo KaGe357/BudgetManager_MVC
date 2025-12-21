@@ -13,6 +13,21 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^5.6"
+        "vlucas/phpdotenv": "^5.6",
+        "php-http/discovery": "^1.20",
+        "guzzlehttp/guzzle": "^7.10",
+        "php-http/guzzle7-adapter": "^1.1",
+        "gemini-api-php/client": "^0.3.0"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.org"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }

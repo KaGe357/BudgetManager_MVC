@@ -1,6 +1,6 @@
 # HomeBudget - Menedżer Budżetu Domowego
 
-Aplikacja do zarządzania budżetem domowym napisana w PHP z własną architekturą MVC, routerem i pełnym zabezpieczeniem.
+Aplikacja do zarządzania budżetem domowym napisana w PHP z własną architekturą MVC, routerem i pełnym zabezpieczeniem. **Teraz z AI Doradcą Finansowym! 🤖**
 
 ## ✨ Funkcje
 - 🔐 **Rejestracja i logowanie** z pełną walidacją
@@ -9,6 +9,7 @@ Aplikacja do zarządzania budżetem domowym napisana w PHP z własną architektu
 - 📅 **Przegląd bilansu** z możliwością wyboru zakresu dat
 - 📜 **Historia transakcji** z paginacją i możliwością usuwania
 - 💳 **Limity wydatków** na kategorie z wizualizacją procentową
+- 🤖 **AI Doradca Finansowy** - spersonalizowane rady od Gemini AI
 - ⚙️ **Zarządzanie kategoriami** i metodami płatności
 - 👤 **Ustawienia konta** (zmiana nazwy, hasła, usuwanie konta)
 - 🔒 **CSRF Protection** we wszystkich formularzach
@@ -18,9 +19,11 @@ Aplikacja do zarządzania budżetem domowym napisana w PHP z własną architektu
 ## 🚀 Stos technologiczny
 - **Backend:** PHP 7.4+ (zalecane 8.0+)
 - **Baza danych:** MySQL/MariaDB
+- **AI:** Google Gemini API 2.5 Flash Lite
 - **Frontend:** Bootstrap 5.3.3, Chart.js, Vanilla JavaScript
 - **Zarządzanie zależnościami:** Composer (PSR-4 autoload)
 - **Zmienne środowiskowe:** phpdotenv
+- **HTTP Client:** Guzzle (dla Gemini API)
 
 ## 📋 Wymagania
 - PHP 7.4 lub wyższy
@@ -54,6 +57,9 @@ DB_USER=root
 DB_PASSWORD=
 DB_NAME=budgetmanager
 APP_ENV=development
+
+# Gemini AI - Pobierz klucz z https://aistudio.google.com/
+GEMINI_API_KEY=twoj_klucz_api
 ```
 
 ### 4. Uruchom aplikację
@@ -132,6 +138,37 @@ fetch('/settings/addExpenseCategory', {
 ### API
 - `GET /api/expense/limit?category=...` - Pobierz limit kategorii
 - `GET /api/limit?category=...` - Pobierz limit (ustawienia)
+- `POST /api/ai/advice` - Generuj radę finansową AI (AJAX)
+- `GET /api/ai/advice/latest` - Pobierz ostatnią zapisaną radę
+
+## 🤖 AI Doradca Finansowy
+
+### Funkcje AI
+- 💡 **Spersonalizowane rady** - analiza przychodów i wydatków
+- 📊 **Analiza okresu** - wybór: 1, 3, 6 lub 12 miesięcy
+- ⏱️ **Rate limiting** - 1 rada na 8 godzin (3x dziennie max)
+- 💾 **Persistencja** - automatyczne zapisywanie w bazie
+- 🎨 **Formatowanie markdown** - bold, listy, wcięcia
+- 🔄 **Auto-load** - ładowanie ostatniej rady po odświeżeniu
+
+### Wymagania
+1. Klucz API Google Gemini - pobierz za darmo: https://aistudio.google.com/
+2. Dodaj do `.env`:
+   ```env
+   GEMINI_API_KEY=twoj_klucz_api
+   ```
+
+### Rate Limiting
+- ✅ Minimum 8 godzin między generacjami
+- ✅ Komunikat z dokładnym czasem oczekiwania
+- ✅ Automatyczne nadpisywanie w bazie (1 rada/użytkownik)
+
+### Struktura rady AI
+1. Spersonalizowane powitanie (imię użytkownika)
+2. Ocena sytuacji finansowej
+3. Główne obserwacje struktury wydatków
+4. Konkretne rekomendacje oszczędnościowe
+5. Pozytywne aspekty zarządzania budżetem
 
 ## 🎨 Funkcje UI/UX
 - 🎨 **Gradient Design** - nowoczesny fioletowy gradient (#667eea → #764ba2)
@@ -161,11 +198,13 @@ error_reporting(E_ALL);
 **Produkcja:** Wyłącz wyświetlanie błędów, zostaw tylko logowanie.
 
 ## 📝 TODO / Możliwe rozszerzenia
-- [ ] Eksport danych (CSV/Excel/PDF)
+- [ ] Eksport rady AI do PDF
+- [ ] Eksport danych (CSV/Excel)
 - [ ] Powiadomienia email o przekroczonych limitach
 - [ ] Recurring transactions (cykliczne płatności)
 - [ ] Wspólne budżety dla rodziny
 - [ ] Import transakcji z plików CSV/Excel
+- [ ] Historia rad AI z możliwością porównania
 - [ ] Aplikacja mobilna (PWA)
 - [ ] Testy jednostkowe (PHPUnit)
 - [ ] CI/CD pipeline

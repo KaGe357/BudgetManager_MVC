@@ -20,6 +20,7 @@ class DatabaseInitializer
         $this->createExpensesTables();
         $this->createPaymentMethodsTables();
         $this->createTransactionsTable();
+        $this->createAiAdvicesTable();
         $this->seedDefaultCategories();
     }
 
@@ -132,6 +133,23 @@ class DatabaseInitializer
                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             ) 
+        ");
+    }
+
+    private function createAiAdvicesTable()
+    {
+        $this->pdo->exec("
+            CREATE TABLE IF NOT EXISTS ai_advices (
+                id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                user_id INT(11) NOT NULL,
+                advice_text LONGTEXT NOT NULL,
+                months_analyzed INT(11) NOT NULL,
+                balance_snapshot JSON NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                UNIQUE KEY unique_user (user_id)
+            )
         ");
     }
 

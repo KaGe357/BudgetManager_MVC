@@ -1,4 +1,5 @@
 /vendor/
 add_user.php
 create_tables.sql
-.env
+.*
+TODO.*
